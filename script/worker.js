@@ -1,5 +1,5 @@
 
-const LOOP_COUNT = 50;
+const LOOP_COUNT = 100;
 let canvas, ctx, iData, canvasWidth, canvasHeight;
 let startTime = 0;
 let run = false;
@@ -31,7 +31,7 @@ onmessage = (e) => {
 };
 
 function render(){
-	let t = (((Date.now() - startTime) / 1000.0) % 30.0) / 15.0;
+    let t = (((Date.now() - startTime) / 1000.0) % 50.0) / 25.0;
     let nowTime = Math.sin(t * Math.PI) * 0.5;
     for(let column = 0; column < canvasWidth; ++column){
         for(let row = 0; row < canvasHeight; ++row){
@@ -44,7 +44,7 @@ function render(){
                 ++count;
                 z = {
                     x: z.x * z.x - z.y * z.y - 0.234 + nowTime,
-                    y: 2.0 * z.x * z.y       + 0.654
+                    y: 2.0 * z.x * z.y       + 0.654 - nowTime * 0.15
                 };
                 if(Math.sqrt(z.x * z.x + z.y * z.y) > 2.0){
                     break;

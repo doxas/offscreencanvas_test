@@ -1,8 +1,6 @@
 
-// 一度 transferControlToOffscreen すると Canvas 要素をリサイズできなくなる
-
 (() => {
-    const CANVAS_SIZE = 256;
+    const CANVAS_SIZE = 512;
     let canvas = null;
     let worker = null;
 
