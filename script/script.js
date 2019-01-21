@@ -1,28 +1,35 @@
 
 (() => {
-    let c = null;
+    let canvas = null;
+    let worker = null;
 
     window.addEventListener('load', () => {
-        let w;
         let isw = window.Worker != null;
-        console.log({worker: isw});
         if(isw === true){
-            w = new Worker('./script/worker.js');
-            w.addEventListener('message', (e) => {
-                console.log('onmessage in mein thread');
+            // load worker script
+            worker = new Worker('./script/worker.js');
+            worker.addEventListener('message', (e) => {
                 console.log(e);
             }, false);
-            w.postMessage('send');
+        }else{
+            console.log('ERR: webworker not supported');
+            return;
         }
 
-        c = document.querySelector('#canvas');
-        resizer(c);
-        console.log({offscreen: c.transferControlToOffscreen != null});
+        canvas = document.querySelector('#canvas');
+        let oc = canvas.transferControlToOffscreen();
+        worker.postMessage({type: 'init', offscreen: oc}, [oc]);
+        resizer();
+
+        window.addEventListener('keydown', (eve) => {
+            worker.postMessage({type: 'keydown', key: eve.key});
+        }, false);
     }, false);
 
-    function resizer(c){
-        c.width = window.innerWidth;
-        c.height = window.innerHeight;
+    function resizer(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        worker.postMessage({type: 'resize'});
     }
 })();
 
