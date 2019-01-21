@@ -1,5 +1,7 @@
 
 (() => {
+    let c = null;
+
     window.addEventListener('load', () => {
         let w;
         let isw = window.Worker != null;
@@ -13,8 +15,14 @@
             w.postMessage('send');
         }
 
-        let c = document.querySelector('#canvas');
+        c = document.querySelector('#canvas');
+        resizer(c);
         console.log({offscreen: c.transferControlToOffscreen != null});
     }, false);
+
+    function resizer(c){
+        c.width = window.innerWidth;
+        c.height = window.innerHeight;
+    }
 })();
 
