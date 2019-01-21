@@ -22,7 +22,7 @@ html, body {
 }
 
 #info input[type=range] {
-    width: 300px;
+    width: 480px;
     margin: auto;
 }
 
