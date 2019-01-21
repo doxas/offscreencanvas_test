@@ -1,5 +1,8 @@
 
+// 一度 transferControlToOffscreen すると Canvas 要素をリサイズできなくなる
+
 (() => {
+    const CANVAS_SIZE = 256;
     let canvas = null;
     let worker = null;
 
@@ -17,19 +20,14 @@
         }
 
         canvas = document.querySelector('#canvas');
+        canvas.width  = CANVAS_SIZE;
+        canvas.height = CANVAS_SIZE;
         let oc = canvas.transferControlToOffscreen();
         worker.postMessage({type: 'init', offscreen: oc}, [oc]);
-        resizer();
 
         window.addEventListener('keydown', (eve) => {
             worker.postMessage({type: 'keydown', key: eve.key});
         }, false);
     }, false);
-
-    function resizer(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        worker.postMessage({type: 'resize'});
-    }
 })();
 
