@@ -37,19 +37,19 @@
             worker.postMessage({type: 'init', offscreen: offscreen}, [offscreen]);
             let s = Math.min(window.innerWidth, window.innerHeight);
             worker.postMessage({type: 'resize', width: s, height: s});
+
+            window.addEventListener('keydown', (eve) => {
+                worker.postMessage({type: 'keydown', key: eve.key});
+            }, false);
+
+            window.addEventListener('resize', (eve) => {
+                let w = Math.min(window.innerWidth, window.innerHeight);
+                worker.postMessage({type: 'resize', width: w, height: w});
+            }, false);
         }else{
             let s = Math.min(window.innerWidth, window.innerHeight);
             worker.postMessage({type: 'run', width: s, height: s});
         }
-
-        window.addEventListener('keydown', (eve) => {
-            worker.postMessage({type: 'keydown', key: eve.key});
-        }, false);
-
-        window.addEventListener('resize', (eve) => {
-            let w = Math.min(window.innerWidth, window.innerHeight);
-            worker.postMessage({type: 'resize', width: w, height: w});
-        }, false);
     };
 })();
 
